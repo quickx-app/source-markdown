@@ -9,15 +9,73 @@
 <h2>Source:</h2>
 <textarea id="source">
 </textarea>
-<button onclick="convert()">Convert to Markdown</button>
+<p><button onclick="convertSourceToMarkdown()">Convert to Markdown</button></p>
 <h2>Markdown:</h2>
 <textarea id="markdown">
 </textarea>
 <script>
-function convert() {
-  let source = document.getElementById('source');
-  let markdown = document.getElementById('markdown');
-  markdown.value = source.value;
+function convertSourceToMarkdown() {
+  const source = document.getElementById('source');
+  const markdown = document.getElementById('markdown');
+  markdown.value = convert(source.value);
+}
+function convert(source) {
+  const blocks = [];
+  let block = [];
+  const lines = source.split(/(\r?\n)+/);
+  let inComment = false;
+  lines.forEach(line => {
+    let trimmed = line.trim();
+    if (inComment) {
+      if (trimmed.endsWith === '*/') {
+	trimmed = trimmed.substring(0, trimmed.length - 2).trim();
+	if (trimmed) {
+	  block.push(trimmed);
+	}
+	blocks.push(block);
+	block = [];
+        inComment = false;
+      } else {
+        block.push(trimmed);
+      }
+    } else { // !inComment
+      if (trimmed.startsWith('//')) {
+        trimmed = trimmed.substring(2).trim();
+	if (trimmed) {
+	  if (block.length || !blocks.length) {
+	    blocks.push(block); // code
+	    blocks.push([]);    // text
+	    block = [];           // code
+	  }
+	  blocks[blocks.length - 1].push(trimmed);
+	}
+      } else if (trimmed.startsWith === '/*') {
+        trimmed = trimmed.substring(2).trim();
+	if (trimmed) {
+	  block.push(trimmed);
+	}
+	blocks.push(block);
+	block = [];
+        inComment = true;
+      }
+    }
+  });
+  const markdown = [];
+  let inCode = true;
+  blocks.forEach(block => {
+    if (block.length) {
+      if (inCode) {
+	markdown.push('```');
+	markdown.push.apply(markdown, block);
+	markdown.push('```');
+      } else {
+	markdown.push('');
+	markdown.push.apply(markdown, block);
+      }
+    }
+    inCode = !inCode;
+  });
+  return markdown.join('\n');
 }
 </script>
 </body>
