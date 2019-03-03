@@ -68,9 +68,11 @@ function convert(source) {
 	markdown.push('```');
 	block.forEach(line => markdown.push(line));
 	markdown.push('```');
+	console.log(`CODE: ${block.join('\n')}`);
       } else {
 	markdown.push('');
 	block.forEach(line => markdown.push(line));
+	console.log(`TEXT: ${block.join('\n')}`);
       }
     }
     inCode = !inCode;
