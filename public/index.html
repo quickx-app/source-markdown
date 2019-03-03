@@ -22,7 +22,7 @@ function convertSourceToMarkdown() {
 function convert(source) {
   const blocks = [];
   var block = [];
-  const lines = source.split(/(\r?\n)+/);
+  const lines = source.split(/(?:\r\n?|\n)+/);
   var inComment = false;
   lines.forEach(line => {
     let trimmed = line.trim();
