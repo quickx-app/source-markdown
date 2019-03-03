@@ -6,5 +6,19 @@
 </head>
 <body>
 <h1>Source-Markdown</h1>
+<h2>Source:</h2>
+<textarea id="source">
+</textarea>
+<button onclick="convert()">Convert to Markdown</button>
+<h2>Markdown:</h2>
+<textarea id="markdown">
+</textarea>
+<script>
+function convert() {
+  let source = document.getElementById('source');
+  let markdown = document.getElementById('markdown');
+  markdown.value = source.value;
+}
+</script>
 </body>
 </html>
