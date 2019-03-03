@@ -45,17 +45,17 @@ function convert(source) {
 	  if (block.length || !blocks.length) {
 	    blocks.push(block); // code
 	    blocks.push([]);    // text
-	    block = [];           // code
+	    block = [];         // code
 	  }
 	  blocks[blocks.length - 1].push(trimmed);
 	}
       } else if (trimmed.startsWith === '/*') {
+	blocks.push(block);
+	block = [];
         trimmed = trimmed.substring(2).trim();
 	if (trimmed) {
 	  block.push(trimmed);
 	}
-	blocks.push(block);
-	block = [];
         inComment = true;
       }
     }
