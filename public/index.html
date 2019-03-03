@@ -66,11 +66,11 @@ function convert(source) {
     if (block.length) {
       if (inCode) {
 	markdown.push('```');
-	markdown.push.apply(markdown, block);
+	block.forEach(line => markdown.push(line));
 	markdown.push('```');
       } else {
 	markdown.push('');
-	markdown.push.apply(markdown, block);
+	block.forEach(line => markdown.push(line));
       }
     }
     inCode = !inCode;
